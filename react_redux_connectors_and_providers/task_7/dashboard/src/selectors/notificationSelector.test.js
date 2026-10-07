@@ -2,7 +2,7 @@ import { Map, fromJS } from "immutable";
 import {
   filterTypeSelected,
   getNotifications,
-  getUnreadNotificationsByType,
+  getUnreadNotifications,
 } from "./notificationSelector";
 
 describe("notification selectors", () => {
@@ -29,28 +29,12 @@ describe("notification selectors", () => {
     });
   });
 
-  it("getUnreadNotificationsByType return a list of the unread message entities when filter is DEFAULT", () => {
+  it("getUnreadNotifications return a list of the unread message entities", () => {
     const expected = [
       { id: 1, isRead: false, type: "default", value: "New course available" },
       { id: 3, isRead: false, type: "urgent", value: "New data available" },
     ];
-    expect(getUnreadNotificationsByType(state).toJS()).toEqual(expected);
-  });
-
-  it("getUnreadNotificationsByType return a list of the unread urgent message entities when filter is URGENT", () => {
-    const urgentState = {
-      notifications: fromJS({
-        filter: "URGENT",
-        notifications: {
-          "1": { id: 1, isRead: false, type: "default", value: "New course available" },
-          "2": { id: 2, isRead: true, type: "urgent", value: "New resume available" },
-          "3": { id: 3, isRead: false, type: "urgent", value: "New data available" },
-        },
-      }),
-    };
-    const expected = [
-      { id: 3, isRead: false, type: "urgent", value: "New data available" },
-    ];
-    expect(getUnreadNotificationsByType(urgentState).toJS()).toEqual(expected);
+    const result = getUnreadNotifications(state).valueSeq().toJS();
+    expect(result).toEqual(expected);
   });
 });

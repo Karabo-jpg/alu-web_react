@@ -240,27 +240,4 @@ describe("<Notifications />", () => {
     expect(fetchNotifications).toHaveBeenCalled();
   });
 
-  it("verify that clicking on the first button calls setNotificationFilter with URGENT", () => {
-    const setNotificationFilter = jest.fn();
-    const wrapper = shallow(
-      <Notifications
-        displayDrawer
-        setNotificationFilter={setNotificationFilter}
-      />
-    );
-    wrapper.find("#buttonFilterUrgent").simulate("click");
-    expect(setNotificationFilter).toHaveBeenCalledWith("URGENT");
-  });
-
-  it("verify that clicking on the second button calls setNotificationFilter with DEFAULT", () => {
-    const setNotificationFilter = jest.fn();
-    const wrapper = shallow(
-      <Notifications
-        displayDrawer
-        setNotificationFilter={setNotificationFilter}
-      />
-    );
-    wrapper.find("#buttonFilterDefault").simulate("click");
-    expect(setNotificationFilter).toHaveBeenCalledWith("DEFAULT");
-  });
 });

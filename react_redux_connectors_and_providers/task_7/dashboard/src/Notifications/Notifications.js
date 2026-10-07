@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import NotificationItemShape from "./NotificationItemShape";
 import closeIcon from "../assets/close-icon.png";
 import { StyleSheet, css } from "aphrodite";
-import { fetchNotifications, markAsAread, setNotificationFilter } from "../actions/notificationActionCreators";
-import { getUnreadNotificationsByType } from "../selectors/notificationSelector";
+import { fetchNotifications, markAsAread } from "../actions/notificationActionCreators";
+import { getUnreadNotifications } from "../selectors/notificationSelector";
 
 export class Notifications extends PureComponent {
   constructor(props) {
@@ -61,26 +61,6 @@ export class Notifications extends PureComponent {
             <p className={css(styles.notificationsP)}>
               Here is the list of notifications
             </p>
-            <button
-              type="button"
-              className={css(styles.filterButton)}
-              id="buttonFilterUrgent"
-              onClick={() => {
-                this.props.setNotificationFilter("URGENT");
-              }}
-            >
-              !!
-            </button>
-            <button
-              type="button"
-              className={css(styles.filterButton)}
-              id="buttonFilterDefault"
-              onClick={() => {
-                this.props.setNotificationFilter("DEFAULT");
-              }}
-            >
-              ?
-            </button>
             <ul className={css(styles.notificationsUL)}>
               {(!listNotifications || listNotifications.length === 0) && (
                 <NotificationItem
@@ -115,7 +95,6 @@ Notifications.defaultProps = {
   handleHideDrawer: () => {},
   markNotificationAsRead: () => {},
   fetchNotifications: () => {},
-  setNotificationFilter: () => {},
 };
 
 Notifications.propTypes = {
@@ -128,7 +107,6 @@ Notifications.propTypes = {
   handleHideDrawer: PropTypes.func,
   markNotificationAsRead: PropTypes.func,
   fetchNotifications: PropTypes.func,
-  setNotificationFilter: PropTypes.func,
 };
 
 const cssVars = {
@@ -235,10 +213,6 @@ const styles = StyleSheet.create({
     marginTop: "15px",
   },
 
-  filterButton: {
-    margin: "0 5px",
-  },
-
   notificationsUL: {
     [screenSize.small]: {
       padding: 0,
@@ -248,14 +222,13 @@ const styles = StyleSheet.create({
 
 export const mapStateToProps = (state) => {
   return {
-    listNotifications: getUnreadNotificationsByType(state),
+    listNotifications: getUnreadNotifications(state),
   };
 };
 
 const mapDispatchToProps = {
   fetchNotifications,
   markNotificationAsRead: markAsAread,
-  setNotificationFilter,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
